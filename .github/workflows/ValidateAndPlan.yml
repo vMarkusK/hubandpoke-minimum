@@ -56,8 +56,8 @@ jobs:
         with:
           sarif_file: 'trivy-results.sarif'
 
-  tarreform:
-    name: tarreform validation and plan
+  terraform:
+    name: Terraform Validation and Plan
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -70,10 +70,10 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
       VAR_PASSWORD: ${{ secrets.VAR_PASSWORD }}
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Terraform setup
+      - name: Terraform Setup
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform fmt
@@ -87,12 +87,8 @@ jobs:
         run: terraform validate -no-color
 
       - name: Terraform Plan
-        run: terraform plan -no-color -var=password=$VAR_PASSWORD
+        run: terraform plan -no-color -var=vm_admin_pwd=$VAR_PASSWORD
         continue-on-error: true
-      
-      - run: echo ${{ steps.plan.outputs.stdout }}
-      - run: echo ${{ steps.plan.outputs.stderr }}
-      - run: echo ${{ steps.plan.outputs.exitcode }}
 
       - uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
