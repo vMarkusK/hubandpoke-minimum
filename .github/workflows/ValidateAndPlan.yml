@@ -77,16 +77,20 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform fmt
+        id: fmt
         run: terraform fmt -check
         continue-on-error: true
 
       - name: Terraform Init
+        id: init
         run: terraform init -backend-config="resource_group_name=tfstate" -backend-config="storage_account_name=tfstate1910602351" -backend-config="container_name=hubspoke" -backend-config="key=hubandspokemin.tfstate"
 
       - name: Terraform Validate
+        id: validate
         run: terraform validate -no-color
 
       - name: Terraform Plan
+        id: plan
         run: terraform plan -no-color -var=vm_admin_pwd=$VAR_PASSWORD
 
       - uses: actions/github-script@v6
