@@ -1,1 +1,3 @@
-# Azure Hub & Spoke - Spoke Vending Machine in Terraform
+# Azure Hub & Spoke Minimum
+
+Azure Hub & Spoke Minimum Deployment with Pipeline.
