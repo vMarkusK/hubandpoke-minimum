@@ -112,6 +112,11 @@ variable "vm_size" {
   type        = string
 }
 
+variable "vm_size_router" {
+  description = "Size of the router VM"
+  type        = string
+}
+
 // Compute Spoke1
 variable "spoke1_vm_hostname" {
   description = "Hostname of spoke1 VM"
