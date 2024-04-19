@@ -88,7 +88,6 @@ jobs:
 
       - name: Terraform Plan
         run: terraform plan -no-color -var=vm_admin_pwd=$VAR_PASSWORD
-        continue-on-error: true
 
       - uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
