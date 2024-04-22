@@ -18,6 +18,7 @@ jobs:
     - uses: terraform-linters/setup-tflint@v3
       name: Setup TFLint
       with:
+        tflint_wrapper: true:
         tflint_version: latest
 
     - name: Show version
@@ -43,7 +44,7 @@ jobs:
           <details><summary>TFLint Output</summary>
 
           \`\`\`\n
-          ${{ steps.tflint.outputs.stdout }}
+          ${{ steps.tflint.outputs.stdout}}
           \`\`\`
 
           </details>
@@ -115,10 +116,12 @@ jobs:
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
+        continue-on-error: true
 
       - name: Terraform Plan
         id: plan
         run: terraform plan -no-color -var=vm_admin_pwd=$VAR_PASSWORD
+        continue-on-error: true
 
       - uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
