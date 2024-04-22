@@ -9,4 +9,6 @@ module "ubuntuspoke1" {
   vmsize                 = var.vm_size
   cloudconfig_file_linux = var.cloudconfig_file_linux
   tags                   = var.tags
+
+  depends_on = [module.ubunturoutervm]
 }
