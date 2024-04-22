@@ -38,13 +38,13 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const output = `#### TFLint exitcode 🤖\`${{ steps.tflint.outputs.exitcode  }}\`
-          `#### TFLint stderr 🤖\`${{ steps.tflint.outputs.stderr   }}\`
+          const output = `#### TFLint exitcode 🤖\`${{ steps.tflint.outputs.exitcode }}\`
+          #### TFLint stderr 🤖\`${{ steps.tflint.outputs.stderr }}\`
 
           <details><summary>TFLint Output</summary>
 
           \`\`\`\n
-          ${{ steps.tflint.outputs.stdout}}
+          ${{ steps.tflint.outputs.stdout }}
           \`\`\`
 
           </details>
