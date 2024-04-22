@@ -28,3 +28,8 @@ resource "azurerm_network_security_group" "nsg-router" {
     destination_address_prefix = "*"
   }
 }
+
+resource "azurerm_subnet_network_security_group_association" "nsg-router-association" {
+  subnet_id                 = azurerm_subnet.subnet_hub[0].id
+  network_security_group_id = azurerm_network_security_group.nsg-router.id
+}
