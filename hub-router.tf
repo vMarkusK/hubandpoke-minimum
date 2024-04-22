@@ -27,6 +27,9 @@ resource "azurerm_network_security_group" "nsg-router" {
     source_address_prefix      = var.myip
     destination_address_prefix = "*"
   }
+
+  tags = var.tags
+
 }
 
 resource "azurerm_subnet_network_security_group_association" "nsg-router-association" {
