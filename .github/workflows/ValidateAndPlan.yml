@@ -32,7 +32,6 @@ jobs:
     - name: Run TFLint
       id: tflint
       run: tflint -f compact
-      continue-on-error: true
 
     - uses: actions/github-script@v6
       if: github.event_name == 'pull_request'
@@ -116,12 +115,10 @@ jobs:
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
-        continue-on-error: true
 
       - name: Terraform Plan
         id: plan
         run: terraform plan -no-color -var=vm_admin_pwd=$VAR_PASSWORD
-        continue-on-error: true
 
       - uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
