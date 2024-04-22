@@ -47,6 +47,6 @@ jobs:
       id: validate
       run: terraform validate -no-color
 
-    - name: Terraform Plan
+    - name: Terraform Apply
       id: plan
-      run: terraform apply -no-color -var=vm_admin_pwd=$VAR_PASSWORD
+      run: terraform apply -no-color -auto-approve -var=vm_admin_pwd=$VAR_PASSWORD
