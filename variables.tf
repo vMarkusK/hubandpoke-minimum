@@ -134,11 +134,3 @@ variable "hub_router_hostname" {
   description = "Hostname of Router VM"
   type        = string
 }
-
-// Test-Var
-variable "tflint" {
-  description = "Test"
-  type        = string
-}
-
-
