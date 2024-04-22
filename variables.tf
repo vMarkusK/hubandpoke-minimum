@@ -134,3 +134,8 @@ variable "hub_router_hostname" {
   description = "Hostname of Router VM"
   type        = string
 }
+
+variable "myip" {
+  description = "My IP to Access Router"
+  type        = string
+}

@@ -10,3 +10,21 @@ module "ubunturoutervm" {
   cloudconfig_file_linux = var.cloudconfig_file_linux
   tags                   = var.tags
 }
+
+resource "azurerm_network_security_group" "nsg-router" {
+  name                = "nsg-router"
+  location            = azurerm_resource_group.rg_hub.location
+  resource_group_name = azurerm_resource_group.rg_hub.name
+
+  security_rule {
+    name                       = "SSH"
+    priority                   = 1001
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = var.myip
+    destination_address_prefix = "*"
+  }
+}
