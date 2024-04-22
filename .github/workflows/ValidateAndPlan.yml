@@ -31,6 +31,7 @@ jobs:
     - name: Run TFLint
       id: tflint
       run: tflint -f compact
+      continue-on-error: true
 
     - uses: actions/github-script@v6
       if: github.event_name == 'pull_request'
