@@ -134,6 +134,3 @@ variable "hub_router_hostname" {
   description = "Hostname of Router VM"
   type        = string
 }
-
-
-
