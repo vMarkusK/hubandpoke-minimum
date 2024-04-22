@@ -29,7 +29,7 @@ resource "azurerm_virtual_network_peering" "hubspoke" {
   resource_group_name       = var.hub-resource_group_name
   virtual_network_name      = var.hub-vnet_name
   remote_virtual_network_id = azurerm_virtual_network.vnet-spoke.id
-  allow_gateway_transit     = true
+  //allow_gateway_transit     = true
 }
 
 resource "azurerm_virtual_network_peering" "spokehub" {
@@ -38,7 +38,7 @@ resource "azurerm_virtual_network_peering" "spokehub" {
   virtual_network_name      = azurerm_virtual_network.vnet-spoke.name
   remote_virtual_network_id = var.hub-vnet_id
   allow_forwarded_traffic   = true
-  use_remote_gateways       = true
+  //use_remote_gateways       = true
 }
 
 // Spoke Routing
