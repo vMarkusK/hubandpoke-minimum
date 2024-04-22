@@ -135,5 +135,10 @@ variable "hub_router_hostname" {
   type        = string
 }
 
+// Test-Var
+variable "tflint" {
+  description = "Test"
+  type        = string
+}
 
 
