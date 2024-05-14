@@ -1,9 +1,9 @@
 name: Test on Push
 on:
   push:
-    branches:
-      - '!main'
-      - '!master'
+    branches-ignore:
+      - main
+      - master
 
 jobs:
   terraform:
