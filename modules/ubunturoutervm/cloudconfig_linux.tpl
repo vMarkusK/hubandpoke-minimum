@@ -12,3 +12,5 @@ runcmd:
   - iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 ntp:
   pools: ['0.de.pool.ntp.org', '1.de.pool.ntp.org', '2.de.pool.ntp.org', '3.de.pool.ntp.org']
+power_state:
+ mode: reboot
