@@ -136,6 +136,6 @@ variable "hub_router_hostname" {
 }
 
 variable "myip" {
-  description = "My IP to Access Router"
+  description = "My OnPrem IP to Access Router"
   type        = string
 }
