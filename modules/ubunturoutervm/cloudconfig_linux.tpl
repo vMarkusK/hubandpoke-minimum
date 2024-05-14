@@ -10,6 +10,7 @@ runcmd:
   - iptables -t nat -A POSTROUTING -d 172.16.0.0/12 -j ACCEPT
   - iptables -t nat -A POSTROUTING -d 192.168.0.0/16 -j ACCEPT
   - iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+  - iptables-save
 ntp:
   pools: ['0.de.pool.ntp.org', '1.de.pool.ntp.org', '2.de.pool.ntp.org', '3.de.pool.ntp.org']
 power_state:
