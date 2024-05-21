@@ -61,34 +61,44 @@ jobs:
     name: Trivy vulnerability scanner 
     runs-on: ubuntu-20.04
     permissions:
-      security-events: write
       actions: read
       contents: read
+      pull-requests: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Run Trivy vulnerability scanner in IaC mode
+        id: trivy
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'config'
           hide-progress: true
-          format: 'table'
+          format: 'github'
 
-      - name: Run Trivy vulnerability scanner in IaC mode - SARIF
-        uses: aquasecurity/trivy-action@master
+      - uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
         with:
-          scan-type: 'config'
-          hide-progress: true
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-          ignore-unfixed: true
-          severity: 'CRITICAL,HIGH'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Trivy exitcode 🤖\`${{ steps.trivy.outputs.exitcode }}\`
 
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: 'trivy-results.sarif'
+            <details><summary>Trivy Output</summary>
+
+            \`\`\`\n
+            ${{ steps.trivy.outputs.stdout }}
+            \`\`\`
+
+            </details>
+
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
 
   terraform:
     name: Terraform Validation and Plan
