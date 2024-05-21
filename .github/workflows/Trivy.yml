@@ -1,12 +1,12 @@
 name: Trivy on Push and PR
 
 on:
-  pull_request:
-    types: [opened, synchronize]
   push:
-    branches-ignore:
-      - main
-      - master
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: '38 19 * * 2'
 
 permissions:
   contents: read
