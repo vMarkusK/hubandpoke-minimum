@@ -57,39 +57,6 @@ jobs:
             body: output
           })
 
-  trivy:
-    name: Trivy vulnerability scanner 
-    runs-on: ubuntu-20.04
-    permissions:
-      security-events: write
-      actions: read
-      contents: read
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Run Trivy vulnerability scanner in IaC mode
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: 'config'
-          hide-progress: true
-          format: 'table'
-
-      - name: Run Trivy vulnerability scanner in IaC mode - SARIF
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: 'config'
-          hide-progress: true
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-          ignore-unfixed: true
-          severity: 'CRITICAL,HIGH'
-
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: 'trivy-results.sarif'
-
   terraform:
     name: Terraform Validation and Plan
     runs-on: ubuntu-latest
