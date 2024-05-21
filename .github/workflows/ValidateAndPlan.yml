@@ -82,7 +82,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const output = `#### Trivy Result 🤖\`${{ steps.trivy.outputs }}\`
+            const output = `#### Trivy Result 🤖\`${{ steps.trivy.outcome }}\`
 
             <details><summary>Trivy Output</summary>
 
