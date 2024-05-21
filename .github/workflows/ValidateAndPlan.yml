@@ -72,7 +72,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'config'
-          hide-progress: false
+          hide-progress: true
           format: 'sarif'
           output: 'trivy-results.sarif'
           ignore-unfixed: true
