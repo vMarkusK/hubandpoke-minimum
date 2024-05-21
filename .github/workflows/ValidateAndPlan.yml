@@ -79,6 +79,8 @@ jobs:
 
       - uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
+        env:
+          TRIVY: "trivy\n${{ steps.trivy.outputs.stdout }}"
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -87,7 +89,7 @@ jobs:
             <details><summary>Trivy Output</summary>
 
             \`\`\`\n
-            ${{ steps.trivy.outputs.stdout }}
+            ${process.env.TRIVY}
             \`\`\`
 
             </details>
