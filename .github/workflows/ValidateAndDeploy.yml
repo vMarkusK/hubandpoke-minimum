@@ -1,4 +1,5 @@
 name: Validate and Deploy on Merge
+
 on:
   push:
     branches:
