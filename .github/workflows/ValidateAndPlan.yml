@@ -74,14 +74,16 @@ jobs:
         with:
           scan-type: 'config'
           hide-progress: true
-          format: 'github'
+          format: 'table'
+          severity: MEDIUM,HIGH,CRITICAL
 
       - uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const output = `#### Trivy exitcode 🤖\`${{ steps.trivy.outputs.exitcode }}\`
+            const output = `#### Trivy Exitcode 🤖\`${{ steps.trivy.outputs.exitcode }}\`
+            #### Trivy Result ⚙️\`${{ steps.trivy.outcome }}\`
 
             <details><summary>Trivy Output</summary>
 
