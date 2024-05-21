@@ -23,13 +23,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Run Trivy vulnerability scanner in IaC mode - SARIF
+      - name: Run Trivy vulnerability scanner in IaC mode
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'config'
           hide-progress: true
           format: 'sarif'
           output: 'trivy-results.sarif'
+          exit-code: '1'
           ignore-unfixed: true
           severity: 'CRITICAL,HIGH'
 
