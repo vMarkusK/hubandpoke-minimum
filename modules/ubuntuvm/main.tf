@@ -57,7 +57,6 @@ resource "azurerm_storage_account" "spokestorageaccount" {
 }
 
 # Create virtual machine
-#trivy:ignore:AVD-AZU-0039
 resource "azurerm_virtual_machine" "spokevm" {
   name                             = var.vmname
   location                         = var.location
