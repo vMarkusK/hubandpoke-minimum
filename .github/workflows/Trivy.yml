@@ -1,4 +1,4 @@
-name: Trivy vulnerability scan
+name: Trivy on Push and PR
 
 on:
   pull_request:
