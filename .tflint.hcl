@@ -6,6 +6,6 @@ plugin "azurerm" {
 
 rule "azurerm_resource_missing_tags" {
   enabled = true
-  tags = ["supportgroup", "applicationname", "environment", "test"]
+  tags = ["supportgroup", "applicationname", "environment"]
   exclude = [] # (Optional) Exclude some resource types from tag checks
 }
