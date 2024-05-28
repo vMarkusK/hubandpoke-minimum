@@ -44,7 +44,7 @@ resource "azurerm_network_connection_monitor" "ubunturoutervm_monitor_ubuntucom"
   test_group {
     name                     = "ubunturoutervm"
     destination_endpoints    = ["archive.ubuntu.com"]
-    source_endpoints         = ["${var.hub_router_hostname}"]
+    source_endpoints         = [var.hub_router_hostname]
     test_configuration_names = ["tcp_80"]
   }
 
