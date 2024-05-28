@@ -22,26 +22,17 @@ resource "azurerm_network_connection_monitor" "ubunturoutervm_monitor_ubuntucom"
   tags               = var.tags
 
   endpoint {
-    name               = "source"
+    name               = var.hub_router_hostname
     target_resource_id = module.ubunturoutervm.id
-
-    filter {
-      item {
-        address = module.ubunturoutervm.id
-        type    = "AgentAddress"
-      }
-
-      type = "Include"
-    }
   }
 
   endpoint {
-    name    = "destination"
+    name    = "archive.ubuntu.com"
     address = "archive.ubuntu.com"
   }
 
   test_configuration {
-    name                      = "tcpName"
+    name                      = "tcp_80"
     protocol                  = "Tcp"
     test_frequency_in_seconds = 60
 
@@ -52,9 +43,9 @@ resource "azurerm_network_connection_monitor" "ubunturoutervm_monitor_ubuntucom"
 
   test_group {
     name                     = "ubunturoutervm"
-    destination_endpoints    = ["destination"]
-    source_endpoints         = ["source"]
-    test_configuration_names = ["tcpName"]
+    destination_endpoints    = ["archive.ubuntu.com"]
+    source_endpoints         = [var.hub_router_hostname]
+    test_configuration_names = ["tcp_80"]
   }
 
   notes = "ubunturoutervm-ubuntucom"
