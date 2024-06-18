@@ -4,7 +4,7 @@ module "ubuntuspoke2" {
   location               = var.location
   subnetid               = module.spoke2network.vnet_subnets[0]
   vmname                 = var.spoke2_vm_hostname
-  vmpassword             = var.vm_admin_pwd
+  vmpassword             = data.azurerm_key_vault_secret.vmpassword.value
   adminusername          = var.vm_admin_user
   vmsize                 = var.vm_size
   cloudconfig_file_linux = var.cloudconfig_file_linux

@@ -101,11 +101,6 @@ variable "vm_admin_user" {
   description = "Username for Virtual Machines"
   type        = string
 }
-variable "vm_admin_pwd" {
-  description = "Password for Virtual Machines"
-  type        = string
-  sensitive   = true
-}
 
 variable "vm_size" {
   description = "Size of the VMs"
