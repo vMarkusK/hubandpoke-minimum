@@ -28,6 +28,29 @@ resource "azurerm_network_security_group" "nsg-router" {
     destination_address_prefix = "*"
   }
 
+  security_rule {
+    name                       = "HttpIn"
+    priority                   = 1010
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "80"
+    source_address_prefix      = "10.0.0.0/8"
+    destination_address_prefix = "*"
+  }
+  security_rule {
+    name                       = "HttpsIn"
+    priority                   = 1011
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "443"
+    source_address_prefix      = "10.0.0.0/8"
+    destination_address_prefix = "*"
+  }
+
   tags = var.tags
 
 }
