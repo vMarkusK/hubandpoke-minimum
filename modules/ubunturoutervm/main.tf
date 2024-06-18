@@ -29,9 +29,10 @@ resource "azurerm_public_ip" "pip_spokevmnic" {
 
 # Create network interface
 resource "azurerm_network_interface" "spokevmnic" {
-  name                = "nic-${var.vmname}-${random_id.randomid_pip.hex}"
-  location            = var.location
-  resource_group_name = var.rgname
+  name                  = "nic-${var.vmname}-${random_id.randomid_pip.hex}"
+  location              = var.location
+  resource_group_name   = var.rgname
+  ip_forwarding_enabled = true
 
   ip_configuration {
     name                          = "${var.vmname}-ipconfig1"
