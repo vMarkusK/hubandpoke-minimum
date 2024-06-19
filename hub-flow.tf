@@ -12,6 +12,9 @@ resource "azurerm_storage_account" "flownsg" {
   account_kind              = "StorageV2"
   account_replication_type  = "LRS"
   enable_https_traffic_only = true
+  min_tls_version           = "TLS1_2"
+
+  tags = var.tags
 }
 
 //TODO Switch to VNet Flow Logs as soon as available (https://github.com/hashicorp/terraform-provider-azurerm/pull/26015)
