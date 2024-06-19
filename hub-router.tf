@@ -51,6 +51,18 @@ resource "azurerm_network_security_group" "nsg-router" {
     destination_address_prefix = "*"
   }
 
+  security_rule {
+    name                       = "NtpIn"
+    priority                   = 1012
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Udp"
+    source_port_range          = "*"
+    destination_port_range     = "123"
+    source_address_prefix      = "10.0.0.0/8"
+    destination_address_prefix = "*"
+  }
+
   tags = var.tags
 
 }
