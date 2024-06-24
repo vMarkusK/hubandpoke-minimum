@@ -130,6 +130,7 @@ variable "hub_router_hostname" {
   type        = string
 }
 
+//SSH Access
 variable "myip" {
   description = "My OnPrem IP to Access Router"
   type        = string
