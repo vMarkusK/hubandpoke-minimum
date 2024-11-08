@@ -11,7 +11,7 @@ resource "azurerm_storage_account" "flownsg" {
   account_tier              = "Standard"
   account_kind              = "StorageV2"
   account_replication_type  = "LRS"
-  enable_https_traffic_only = true
+  https_traffic_only_enabled = true
   min_tls_version           = "TLS1_2"
 
   tags = var.tags
