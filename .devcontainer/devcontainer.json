@@ -4,14 +4,15 @@
   "features": {
     "ghcr.io/devcontainers/features/azure-cli:1": {},
     "ghcr.io/devcontainers/features/terraform:1": {},
-    "ghcr.io/devcontainers-extra/features/checkov:1": {}
+    "ghcr.io/itsmechlark/features/trivy:1": {}
   },
   "postCreateCommand": "tflint --ini",
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"XargsUK.checkov-prismaless",
-				"Gruntfuggly.todo-tree"
+				"Gruntfuggly.todo-tree",
+				"davidanson.vscode-markdownlint",
+				"github.vscode-github-actions"
 			]
 		}
 	}
