@@ -18,6 +18,7 @@ resource "azurerm_storage_account" "flownsg" {
 }
 
 //TODO Switch to VNet Flow Logs as soon as available (https://github.com/hashicorp/terraform-provider-azurerm/pull/26015)
+#trivy:ignore:AVD-AZU-0049
 resource "azurerm_network_watcher_flow_log" "nsg_router" {
   network_watcher_name = azurerm_network_watcher.networkwatcher_hub.name
   resource_group_name  = azurerm_resource_group.rg_hub.name
