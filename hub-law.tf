@@ -22,6 +22,7 @@ resource "azurerm_monitor_diagnostic_setting" "nsg_router" {
       category = entry.value
     }
   }
+
   dynamic "metric" {
     iterator = entry
     for_each = data.azurerm_monitor_diagnostic_categories.nsg_logs.metrics
