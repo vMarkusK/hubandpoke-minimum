@@ -6,6 +6,8 @@ on:
       - main
       - master
 
+permissions: read
+
 jobs:
   deploy:
     name: Validate and Deploy
@@ -41,7 +43,7 @@ jobs:
 
     - name: Terraform Init
       id: init
-      run: terraform init -backend-config="resource_group_name=tfstate" -backend-config="storage_account_name=tfstate1910602351" -backend-config="container_name=hubspoke" -backend-config="key=hubandspokemin.tfstate"
+      run: terraform init -backend-config=azurerm.tfbackend
 
     - name: Terraform Validate
       id: validate
