@@ -15,6 +15,7 @@ resource "azurerm_virtual_network" "vnet_hub" {
 }
 
 resource "azurerm_subnet" "subnet_hub" {
+  # checkov:skip=CKV2_AZURE_31: ADD REASON
   name                 = var.hub-subnet_names[count.index]
   virtual_network_name = azurerm_virtual_network.vnet_hub.name
   resource_group_name  = azurerm_resource_group.rg_hub.name

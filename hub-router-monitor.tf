@@ -48,8 +48,7 @@ resource "azurerm_network_connection_monitor" "ubunturoutervm_monitor_ubuntucom"
     test_configuration_names = ["tcp_80"]
   }
 
-  notes = "ubunturoutervm-ubuntucom"
-
+  notes                         = "ubunturoutervm-ubuntucom"
   output_workspace_resource_ids = [azurerm_log_analytics_workspace.law_platform.id]
 
   depends_on = [azurerm_virtual_machine_extension.ubunturoutervm_networkwatcher]
