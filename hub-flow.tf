@@ -14,6 +14,11 @@ resource "azurerm_storage_account" "flownsg" {
   https_traffic_only_enabled = true
   min_tls_version            = "TLS1_2"
 
+  sas_policy {
+    expiration_period = "90.00:00:00"
+    expiration_action = "Log"
+  }
+
   tags = var.tags
 }
 
