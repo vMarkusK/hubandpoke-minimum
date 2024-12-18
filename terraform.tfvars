@@ -29,13 +29,13 @@ spoke2_vnet_name     = "vnet-spoke2-001"
 spoke2_address_space = "10.101.0.0/16"
 spoke2_vnet_subnets = [
   { name = "WebTier"
-    cidr = ["10.100.1.0/24"]
+    cidr = ["10.101.1.0/24"]
   },
   { name = "LogicTier"
-    cidr = ["10.100.2.0/24"]
+    cidr = ["10.101.2.0/24"]
   },
   { name = "DatabaseTier"
-    cidr = ["10.100.3.0/24"]
+    cidr = ["10.101.3.0/24"]
   }
 ]
 rg_compute_name        = "rg-compute-001"
