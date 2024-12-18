@@ -3,7 +3,7 @@ resource "random_id" "id_flownsg" {
 }
 
 #TODO Storage Account Firewall Rules
-resource "azurerm_storage_account" "flownsg" {
+resource "azurerm_storage_account" "flow" {
   name                = "flownsg${random_id.id_flownsg.hex}"
   location            = azurerm_resource_group.rg_hub.location
   resource_group_name = azurerm_resource_group.rg_hub.name
@@ -24,19 +24,19 @@ resource "azurerm_storage_account" "flownsg" {
 
 #TODO Switch to VNet Flow Logs as soon as available (https://github.com/hashicorp/terraform-provider-azurerm/pull/26015)
 #trivy:ignore:AVD-AZU-0049
-resource "azurerm_network_watcher_flow_log" "nsg_router" {
+resource "azurerm_network_watcher_flow_log" "vnet_hub" {
   network_watcher_name = azurerm_network_watcher.networkwatcher_hub.name
   resource_group_name  = azurerm_resource_group.rg_hub.name
-  name                 = "nsg_router-log"
+  name                 = "vnet_hub-log"
 
-  network_security_group_id = azurerm_network_security_group.nsg_router.id
-  storage_account_id        = azurerm_storage_account.flownsg.id
-  enabled                   = true
-  version                   = 2
+  target_resource_id = azurerm_virtual_network.hub_vnet.id
+  storage_account_id = azurerm_storage_account.flow.id
+  enabled            = true
+  version            = 2
 
   retention_policy {
     enabled = true
-    days    = 7
+    days    = 14
   }
 
   traffic_analytics {
