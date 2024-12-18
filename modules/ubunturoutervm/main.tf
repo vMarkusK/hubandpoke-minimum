@@ -12,7 +12,7 @@ data "template_cloudinit_config" "config_linux" {
   }
 }
 
-// PIP
+# PIP
 resource "random_id" "randomid_pip" {
   byte_length = 4
 }
@@ -66,7 +66,7 @@ resource "azurerm_storage_account" "spokestorageaccount" {
   min_tls_version          = "TLS1_2"
   network_rules {
     default_action = "Deny"
-    ip_rules       = ["51.116.75.88", "20.52.95.48", "51.12.72.223", "51.12.22.174"] //IPs from Germany and Sweden 
+    ip_rules       = ["51.116.75.88", "20.52.95.48", "51.12.72.223", "51.12.22.174"] #IPs from Germany and Sweden 
     bypass         = ["Logging", "Metrics", "AzureServices"]
   }
 
