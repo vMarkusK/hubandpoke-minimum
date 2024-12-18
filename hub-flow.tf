@@ -4,7 +4,7 @@ resource "random_id" "id_flow" {
 
 #TODO Storage Account Firewall Rules
 resource "azurerm_storage_account" "flow" {
-  name                = "flownsg${random_id.id_flow.hex}"
+  name                = "stflow${random_id.id_flow.hex}"
   location            = azurerm_resource_group.rg_hub.location
   resource_group_name = azurerm_resource_group.rg_hub.name
 
@@ -24,10 +24,10 @@ resource "azurerm_storage_account" "flow" {
 
 #TODO Switch to VNet Flow Logs as soon as available (https://github.com/hashicorp/terraform-provider-azurerm/pull/26015)
 #trivy:ignore:AVD-AZU-0049
-resource "azurerm_network_watcher_flow_log" "vnet_hub" {
+resource "azurerm_network_watcher_flow_log" "hub" {
   network_watcher_name = azurerm_network_watcher.networkwatcher_hub.name
   resource_group_name  = azurerm_resource_group.rg_hub.name
-  name                 = "vnet_hub-log"
+  name                 = "hub-flow"
 
   target_resource_id = azurerm_virtual_network.hub_vnet.id
   storage_account_id = azurerm_storage_account.flow.id
