@@ -1,15 +1,15 @@
 subscription_id = "85f4c871-0572-44e7-830e-de36fb870a37"
-location = "swedencentral"
+location        = "swedencentral"
 tags = {
-  applicationname = "SpokeVendingMachine"
-  environment     = "Dev"
-  supportgroup    = "Markus Kraus"
-}
-rg_hub-name            = "rg-net-hub-001"
-vnet_hub-name          = "vnet_hub-001"
-vnet_hub-address_space = ["10.0.0.0/16"]
-hub-subnet_names       = ["RouterSubnet"]
-hub-subnet_prefixes    = ["10.0.0.0/26"]
+environment = "Dev" }
+hub_rg_name           = "rg-net-hub-001"
+hub_vnet_name         = "vnet_hub-001"
+hub_vnet_addressspace = ["10.0.0.0/16"]
+hub_vnet_subnets = [
+  { name = "RouterSubnet"
+    cidr = ["10.0.0.0/26"]
+  }
+]
 spoke1_rg_name         = "rg-spoke1-001"
 spoke1_vnet_name       = "vnet-spoke1-001"
 spoke1_address_space   = "10.100.0.0/16"

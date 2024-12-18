@@ -10,6 +10,6 @@ module "spoke1network" {
   hub-vnet_name           = azurerm_virtual_network.vnet_hub.name
   hub-vnet_id             = azurerm_virtual_network.vnet_hub.id
   router-private-ip       = module.ubunturoutervm.vmnicip
-  hub-vnet_address_space  = tostring(var.vnet_hub-address_space[0])
+  hub-vnet_address_space  = tostring(var.hub_vnet_addressspace[0])
   tags                    = var.tags
 }

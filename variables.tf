@@ -15,29 +15,27 @@ variable "tags" {
 }
 
 # Hub
-variable "rg_hub-name" {
+variable "hub_rg_name" {
   description = "Name of the Hub RG"
   type        = string
 }
 
-variable "vnet_hub-name" {
+variable "hub_vnet_name" {
   description = "Name of the Hub VNet"
   type        = string
 }
 
-variable "vnet_hub-address_space" {
+variable "hub_vnet_addressspace" {
   description = "Address Space of the Hub VNet"
   type        = list(string)
 }
 
-variable "hub-subnet_names" {
-  description = "Subnet Names of the Hub VNet"
-  type        = list(string)
-}
-
-variable "hub-subnet_prefixes" {
-  description = "Subnet Prefixes of the Hub VNet"
-  type        = list(string)
+variable "hub_vnet_subnets" {
+  description = "Subnets of the Hub VNet"
+  type = list(object({
+    name = string
+    cidr = list(string)
+  }))
 }
 
 # Spoke1
@@ -140,3 +138,5 @@ variable "myip" {
   description = "My OnPrem IP to Access Router"
   type        = string
 }
+
+
