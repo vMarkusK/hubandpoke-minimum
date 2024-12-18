@@ -1,10 +1,10 @@
-resource "random_id" "id_flownsg" {
+resource "random_id" "id_flow" {
   byte_length = 8
 }
 
 #TODO Storage Account Firewall Rules
 resource "azurerm_storage_account" "flow" {
-  name                = "flownsg${random_id.id_flownsg.hex}"
+  name                = "flownsg${random_id.id_flow.hex}"
   location            = azurerm_resource_group.rg_hub.location
   resource_group_name = azurerm_resource_group.rg_hub.name
 
