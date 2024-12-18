@@ -9,7 +9,7 @@ data "azurerm_key_vault" "secrets" {
   resource_group_name = "secrets"
 }
 
-data "azurerm_key_vault_secret" "vmpassword" {
+ephemeral "azurerm_key_vault_secret" "vmpassword" {
   name         = "vmpassword"
   key_vault_id = data.azurerm_key_vault.secrets.id
 }
