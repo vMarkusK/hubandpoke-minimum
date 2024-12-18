@@ -16,12 +16,14 @@ resource "azurerm_virtual_network" "vnet-spoke" {
 
 # SubNets
 resource "azurerm_subnet" "subnet-spoke" {
-  name                 = var.subnet_names[count.index]
-  virtual_network_name = azurerm_virtual_network.vnet-spoke.name
+  for_each = { for subnet in var.subnets : subnet.name => subnet }
+
+  name                 = each.value.name
   resource_group_name  = azurerm_resource_group.rg-spoke.name
-  address_prefixes     = ["${var.subnet_prefixes[count.index]}"]
-  count                = length(var.subnet_names)
+  virtual_network_name = azurerm_virtual_network.vnet-spoke.name
+  address_prefixes     = each.value.cidr
 }
+
 
 # Peering
 resource "azurerm_virtual_network_peering" "hubspoke" {

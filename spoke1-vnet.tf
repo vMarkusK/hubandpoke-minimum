@@ -7,8 +7,8 @@ module "spoke1network" {
   subnet_prefixes         = var.spoke1_subnet_prefixes
   subnet_names            = var.spoke1_subnet_names
   hub-resource_group_name = azurerm_resource_group.rg_hub.name
-  hub-vnet_name           = azurerm_virtual_network.vnet_hub.name
-  hub-vnet_id             = azurerm_virtual_network.vnet_hub.id
+  hub-vnet_name           = azurerm_virtual_network.hub_vnet.name
+  hub-vnet_id             = azurerm_virtual_network.hub_vnet.id
   router-private-ip       = module.ubunturoutervm.vmnicip
   hub-vnet_address_space  = tostring(var.hub_vnet_addressspace[0])
   tags                    = var.tags

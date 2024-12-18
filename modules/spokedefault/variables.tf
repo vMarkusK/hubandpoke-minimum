@@ -20,12 +20,12 @@ variable "dns_servers" {
   default     = []
 }
 
-variable "subnet_prefixes" {
-  description = "The address prefix to use for the subnet."
-}
-
-variable "subnet_names" {
-  description = "A list of public subnets inside the vNet."
+variable "subnets" {
+  description = "Subnets of the virtual network."
+  type = list(object({
+    name = string
+    cidr = list(string)
+  }))
 }
 
 variable "hub-resource_group_name" {

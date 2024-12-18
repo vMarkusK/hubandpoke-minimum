@@ -54,14 +54,12 @@ variable "spoke1_address_space" {
   type        = string
 }
 
-variable "spoke1_subnet_names" {
-  description = "spoke1 Subnet Names"
-  type        = list(string)
-}
-
-variable "spoke1_subnet_prefixes" {
-  description = "spoke1 Subnet prefixes"
-  type        = list(string)
+variable "spoke1_vnet_subnets" {
+  description = "Subnets of the spoke1 VNet"
+  type = list(object({
+    name = string
+    cidr = list(string)
+  }))
 }
 
 # Spoke2
@@ -80,14 +78,12 @@ variable "spoke2_address_space" {
   type        = string
 }
 
-variable "spoke2_subnet_names" {
-  description = "spoke2 Subnet Names"
-  type        = list(string)
-}
-
-variable "spoke2_subnet_prefixes" {
-  description = "spoke2 Subnet prefixes"
-  type        = list(string)
+variable "spoke2_vnet_subnets" {
+  description = "Subnets of the spoke2 VNet"
+  type = list(object({
+    name = string
+    cidr = list(string)
+  }))
 }
 
 # Compute General
