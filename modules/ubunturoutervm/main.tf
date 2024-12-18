@@ -122,3 +122,12 @@ resource "azurerm_virtual_machine" "spokevm" {
 
   tags = var.tags
 }
+
+resource "azurerm_virtual_machine_extension" "auto_upgrade" {
+  name                       = var.vmname
+  virtual_machine_id         = azurerm_virtual_machine.spokevm.id
+  publisher                  = "Microsoft.Azure.Security"
+  type                       = "IaaSAntimalware"
+  type_handler_version       = "2.0"
+  auto_upgrade_minor_version = true
+}

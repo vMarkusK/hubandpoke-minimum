@@ -47,10 +47,16 @@ resource "azurerm_storage_account" "spokestorageaccount" {
   account_tier             = "Standard"
   account_replication_type = "LRS"
   min_tls_version          = "TLS1_2"
+
   network_rules {
     default_action = "Deny"
     ip_rules       = ["51.116.75.88", "20.52.95.48", "51.12.72.223", "51.12.22.174"] #IPs from Germany and Sweden 
     bypass         = ["Logging", "Metrics", "AzureServices"]
+  }
+
+  sas_policy {
+    expiration_period = "90.00:00:00"
+    expiration_action = "Log"
   }
 
   tags = var.tags
@@ -98,4 +104,13 @@ resource "azurerm_virtual_machine" "spokevm" {
   }
 
   tags = var.tags
+}
+
+resource "azurerm_virtual_machine_extension" "auto_upgrade" {
+  name                       = var.vmname
+  virtual_machine_id         = azurerm_virtual_machine.spokevm.id
+  publisher                  = "Microsoft.Azure.Security"
+  type                       = "IaaSAntimalware"
+  type_handler_version       = "2.0"
+  auto_upgrade_minor_version = true
 }
