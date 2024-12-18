@@ -16,7 +16,10 @@
 				"XargsUK.checkov-prismaless",
 				"Gruntfuggly.todo-tree",
         "matheusq94.TFS",
-        "XargsUK.checkov-prismaless"
+        "XargsUK.checkov-prismaless",
+        "infracost.infracost",
+        "github.copilot",
+        "github.copilot-chat"
 			]
 		}
 	}
