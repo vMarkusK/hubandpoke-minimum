@@ -62,7 +62,8 @@ resource "azurerm_route" "default-route" {
 }
 
 resource "azurerm_subnet_route_table_association" "route_table_association" {
+  for_each = azurerm_subnet.subnet-spoke
+
   route_table_id = azurerm_route_table.spoke-rt-table.id
-  subnet_id      = azurerm_subnet.subnet-spoke[count.index].id
-  count          = length(azurerm_subnet.subnet-spoke)
+  subnet_id      = each.value.id
 }
