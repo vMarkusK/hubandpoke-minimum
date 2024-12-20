@@ -66,7 +66,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: Dev
     permissions:
-      pull-requests: write
+      id-token: write
       contents: read
       actions: read
     env:
@@ -109,17 +109,17 @@ jobs:
       run: terraform validate -no-color
 
     - name: Terraform Plan
-      run: terraform plan -var-file=./environments/$VAR_FILE -input=false
+      run: terraform plan -input=false
 
     - name: Terraform Apply
-      run: terraform apply -var-file=./environments/$VAR_FILE -auto-approve -input=false
+      run: terraform apply -auto-approve -input=false
 
   terraform_prod:
     name: "Terraform Prod"
     runs-on: ubuntu-latest
     environment: Prod
     permissions:
-      pull-requests: write
+      id-token: write
       contents: read
       actions: read
     env:
@@ -159,7 +159,7 @@ jobs:
       run: terraform fmt -check
 
     - name: Terraform Plan
-      run: terraform plan -var-file=./environments/$VAR_FILE -input=false
+      run: terraform plan -input=false
 
     - name: Terraform Apply
-      run: terraform apply -var-file=./environments/$VAR_FILE -auto-approve -input=false
+      run: terraform apply -auto-approve -input=false

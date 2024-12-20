@@ -92,11 +92,6 @@ variable "rg_compute_name" {
   type        = string
 }
 
-variable "cloudconfig_file_linux" {
-  description = "The location of the cloud init configuration file."
-  type        = string
-}
-
 variable "vm_admin_user" {
   description = "Username for Virtual Machines"
   type        = string
