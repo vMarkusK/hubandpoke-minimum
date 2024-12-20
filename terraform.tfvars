@@ -39,12 +39,11 @@ spoke2_vnet_subnets = [
     cidr = ["10.101.3.0/24"]
   }
 ]
-rg_compute_name        = "rg-compute-001"
-cloudconfig_file_linux = "cloudconfig_linux.tpl"
-vm_admin_user          = "azureuser"
-vm_size                = "Standard_B1s"
-vm_size_router         = "Standard_B1s"
-spoke1_vm_hostname     = "vm-spoke1-dev-001"
-spoke2_vm_hostname     = "vm-spoke2-dev-001"
-hub_router_hostname    = "vm-hub-dev-001"
-myip                   = "93.219.74.211/32"
+rg_compute_name     = "rg-compute-001"
+vm_admin_user       = "azureuser"
+vm_size             = "Standard_B1s"
+vm_size_router      = "Standard_B1s"
+spoke1_vm_hostname  = "vm-spoke1-dev-001"
+spoke2_vm_hostname  = "vm-spoke2-dev-001"
+hub_router_hostname = "vm-hub-dev-001"
+myip                = "93.219.74.211/32"

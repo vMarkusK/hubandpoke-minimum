@@ -25,8 +25,10 @@ variable "adminusername" {
   description = "Name of the admin account"
 }
 
-variable "cloudconfig_file_linux" {
-  description = "The location of the cloud init configuration file."
+variable "router" {
+  description = "Enable IP forwarding on the NIC"
+  type        = bool
+  default     = false
 }
 
 variable "tags" {

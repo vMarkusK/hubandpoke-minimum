@@ -5,5 +5,5 @@ output "vmnicip" {
 
 output "id" {
   description = "id of the provisioned vm"
-  value       = azurerm_virtual_machine.spokevm.id
+  value       = azurerm_linux_virtual_machine.spokevm.id
 }
