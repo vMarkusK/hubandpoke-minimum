@@ -42,7 +42,7 @@ resource "azurerm_network_interface" "spokevmnic" {
     name                          = "${var.vmname}-ipconfig1"
     subnet_id                     = var.subnetid
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = var.router ? azurerm_public_ip.pip_spokevmnic.id : null
+    public_ip_address_id          = var.router ? azurerm_public_ip.pip_spokevmnic[0].id : null
   }
 
   tags = var.tags
