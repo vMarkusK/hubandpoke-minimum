@@ -1,79 +1,143 @@
-name: Validate and Plan on PR
+name: "Terraform Plan"
+
 on:
   pull_request:
     types: [opened, synchronize]
 
+  workflow_dispatch:
+
+permissions: read-all
+
 jobs:
-  terraform:
-    name: Terraform Validation and Plan
+  lint:
+    name: "Lint"
     runs-on: ubuntu-latest
     permissions:
-      actions: read
       contents: read
+      actions: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: terraform-linters/setup-tflint@v4
+        name: Setup TFLint
+        with:
+          tflint_version: latest
+
+      - name: Init TFLint
+        run: tflint --init
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Show version
+        run: tflint --version
+
+      - name: Run TFLint
+        id: tflint
+        run: tflint --minimum-failure-severity=error --format=compact
+  scan:
+    name: "Scan"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Run Trivy vulnerability scanner in IaC mode
+      id: trivy
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'config'
+        hide-progress: true
+        format: 'table'
+        exit-code: '1'
+        severity: 'CRITICAL,HIGH'
+  
+  terraform_dev:
+    name: "Terraform Dev"
+    runs-on: ubuntu-latest
+    environment: Dev
+    permissions:
+      contents: read
+      actions: read
       pull-requests: write
     env:
+      VAR_FILE: ${{ vars.VAR_FILE }}
+      BACKEND_FILE: ${{ vars.BACKEND_FILE }}
       ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+    defaults:
+      run:
+        shell: bash
+    needs: [lint, scan]
+    if: |
+      always() &&
+      (needs.lint.result == 'success' || needs.lint.result == 'skipped') &&
+      (needs.scan.result == 'success' || needs.scan.result == 'skipped')
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+    - name: Checkout
+      uses: actions/checkout@v4
 
-      - name: Terraform Setup
-        uses: hashicorp/setup-terraform@v3
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
 
-      - name: Terraform fmt
-        id: fmt
-        run: terraform fmt -check
-        continue-on-error: true
+    - name: Terraform Init
+      id: init
+      run: terraform init -backend-config=./environments/$BACKEND_FILE
 
-      - name: Terraform Init
-        id: init
-        run: terraform init -backend-config="resource_group_name=tfstate" -backend-config="storage_account_name=tfstate1910602351" -backend-config="container_name=hubspoke" -backend-config="key=hubandspokemin.tfstate"
+    - name: Terraform Format
+      id: fmt
+      run: terraform fmt -check
 
-      - name: Terraform Validate
-        id: validate
-        run: terraform validate -no-color
+    - name: Terraform Validate
+      id: validate
+      run: terraform validate -no-color
 
-      - name: Terraform Plan
-        id: plan
-        run: terraform plan -no-color
+    - name: Terraform Plan
+      id: plan
+      run: terraform plan -var-file ./environments/$VAR_FILE -input=false  -no-color
 
-      - uses: actions/github-script@v6
-        if: github.event_name == 'pull_request'
-        env:
-          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-            #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
-            <details><summary>Validation Output</summary>
+    - uses: actions/github-script@v7
+      if:
+        (github.event_name == 'pull_request')
+      env:
+        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+          #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+          #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+          <details><summary>Validation Output</summary>
 
-            \`\`\`\n
-            ${{ steps.validate.outputs.stdout }}
-            \`\`\`
+          \`\`\`\n
+          ${{ steps.validate.outputs.stdout }}
+          \`\`\`
 
-            </details>
+          </details>
 
-            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+          #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
 
-            <details><summary>Show Plan</summary>
+          <details><summary>Show Plan</summary>
 
-            \`\`\`\n
-            ${process.env.PLAN}
-            \`\`\`
+          \`\`\`\n
+          ${process.env.PLAN}
+          \`\`\`
 
-            </details>
+          </details>
 
-            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
+          *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
 
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: output
-            })
-          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: output
+          })
