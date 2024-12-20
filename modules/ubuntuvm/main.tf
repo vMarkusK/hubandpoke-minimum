@@ -12,6 +12,25 @@ data "template_cloudinit_config" "config_linux" {
   }
 }
 
+# PIP
+resource "random_id" "randomid_pip" {
+  count = var.router ? 1 : 0
+
+  byte_length = 4
+}
+
+resource "azurerm_public_ip" "pip_spokevmnic" {
+  count = var.router ? 1 : 0
+
+  name                = "pip-${var.vmname}"
+  resource_group_name = var.rgname
+  location            = var.location
+  allocation_method   = "Static"
+  sku                 = "Standard"
+  domain_name_label   = "pip-${random_id.randomid_pip[0].hex}"
+  tags                = var.tags
+}
+
 # Create network interface
 resource "azurerm_network_interface" "spokevmnic" {
   name                  = "nic-${var.vmname}-${random_id.randomIdVM.hex}"
@@ -23,6 +42,7 @@ resource "azurerm_network_interface" "spokevmnic" {
     name                          = "${var.vmname}-ipconfig1"
     subnet_id                     = var.subnetid
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = var.router ? azurerm_public_ip.pip_spokevmnic.id : null
   }
 
   tags = var.tags
