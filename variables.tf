@@ -1,3 +1,4 @@
+# General
 variable "subscription_id" {
   description = "Subscription ID for all resources"
   type        = string
@@ -13,33 +14,31 @@ variable "tags" {
   type        = map(string)
 }
 
-// Hub
-variable "rg_hub-name" {
+# Hub
+variable "hub_rg_name" {
   description = "Name of the Hub RG"
   type        = string
 }
 
-variable "vnet_hub-name" {
+variable "hub_vnet_name" {
   description = "Name of the Hub VNet"
   type        = string
 }
 
-variable "vnet_hub-address_space" {
+variable "hub_vnet_addressspace" {
   description = "Address Space of the Hub VNet"
   type        = list(string)
 }
 
-variable "hub-subnet_names" {
-  description = "Subnet Names of the Hub VNet"
-  type        = list(string)
+variable "hub_vnet_subnets" {
+  description = "Subnets of the Hub VNet"
+  type = list(object({
+    name = string
+    cidr = list(string)
+  }))
 }
 
-variable "hub-subnet_prefixes" {
-  description = "Subnet Prefixes of the Hub VNet"
-  type        = list(string)
-}
-
-// Spoke1
+# Spoke1
 variable "spoke1_rg_name" {
   description = "spoke1 RG name"
   type        = string
@@ -55,17 +54,15 @@ variable "spoke1_address_space" {
   type        = string
 }
 
-variable "spoke1_subnet_names" {
-  description = "spoke1 Subnet Names"
-  type        = list(string)
+variable "spoke1_vnet_subnets" {
+  description = "Subnets of the spoke1 VNet"
+  type = list(object({
+    name = string
+    cidr = list(string)
+  }))
 }
 
-variable "spoke1_subnet_prefixes" {
-  description = "spoke1 Subnet prefixes"
-  type        = list(string)
-}
-
-// Spoke2
+# Spoke2
 variable "spoke2_rg_name" {
   description = "spoke2 RG name"
   type        = string
@@ -81,17 +78,15 @@ variable "spoke2_address_space" {
   type        = string
 }
 
-variable "spoke2_subnet_names" {
-  description = "spoke2 Subnet Names"
-  type        = list(string)
+variable "spoke2_vnet_subnets" {
+  description = "Subnets of the spoke2 VNet"
+  type = list(object({
+    name = string
+    cidr = list(string)
+  }))
 }
 
-variable "spoke2_subnet_prefixes" {
-  description = "spoke2 Subnet prefixes"
-  type        = list(string)
-}
-
-// Compute General
+# Compute General
 variable "rg_compute_name" {
   description = "Compute RG Name"
   type        = string
@@ -117,19 +112,19 @@ variable "vm_size_router" {
   type        = string
 }
 
-// Compute Spoke1
+# Compute Spoke1
 variable "spoke1_vm_hostname" {
   description = "Hostname of spoke1 VM"
   type        = string
 }
 
-// Compute Spoke2
+# Compute Spoke2
 variable "spoke2_vm_hostname" {
   description = "Hostname of spoke1 VM"
   type        = string
 }
 
-// Compute Hub-Router
+# Compute Hub-Router
 variable "hub_router_hostname" {
   description = "Hostname of Router VM"
   type        = string
@@ -139,3 +134,5 @@ variable "myip" {
   description = "My OnPrem IP to Access Router"
   type        = string
 }
+
+

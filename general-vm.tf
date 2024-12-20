@@ -5,8 +5,8 @@ resource "azurerm_resource_group" "rg_compute" {
 }
 
 data "azurerm_key_vault" "secrets" {
-  name                = "hubandspokesecrets"
-  resource_group_name = "secrets"
+  name                = "kv-tf-infra-sec-001"
+  resource_group_name = "rg-tf-infra-001"
 }
 
 data "azurerm_key_vault_secret" "vmpassword" {

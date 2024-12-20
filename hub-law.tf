@@ -7,12 +7,12 @@ resource "azurerm_log_analytics_workspace" "law_platform" {
 }
 
 data "azurerm_monitor_diagnostic_categories" "nsg_logs" {
-  resource_id = azurerm_network_security_group.nsg-router.id
+  resource_id = azurerm_network_security_group.nsg_router.id
 }
 
 resource "azurerm_monitor_diagnostic_setting" "nsg_router" {
   name                       = "nsg_router_diag"
-  target_resource_id         = azurerm_network_security_group.nsg-router.id
+  target_resource_id         = azurerm_network_security_group.nsg_router.id
   log_analytics_workspace_id = azurerm_log_analytics_workspace.law_platform.id
 
   dynamic "enabled_log" {

@@ -4,7 +4,7 @@ resource "azurerm_resource_group" "rg-spoke" {
   tags     = var.tags
 }
 
-// VNet
+# VNet
 resource "azurerm_virtual_network" "vnet-spoke" {
   name                = var.vnet_name
   location            = var.location
@@ -14,22 +14,24 @@ resource "azurerm_virtual_network" "vnet-spoke" {
   tags                = var.tags
 }
 
-// SubNets
+# SubNets
 resource "azurerm_subnet" "subnet-spoke" {
-  name                 = var.subnet_names[count.index]
-  virtual_network_name = azurerm_virtual_network.vnet-spoke.name
+  for_each = { for subnet in var.subnets : subnet.name => subnet }
+
+  name                 = each.value.name
   resource_group_name  = azurerm_resource_group.rg-spoke.name
-  address_prefixes     = ["${var.subnet_prefixes[count.index]}"]
-  count                = length(var.subnet_names)
+  virtual_network_name = azurerm_virtual_network.vnet-spoke.name
+  address_prefixes     = each.value.cidr
 }
 
-// Peering
+
+# Peering
 resource "azurerm_virtual_network_peering" "hubspoke" {
   name                      = "hub-${var.vnet_name}"
   resource_group_name       = var.hub-resource_group_name
   virtual_network_name      = var.hub-vnet_name
   remote_virtual_network_id = azurerm_virtual_network.vnet-spoke.id
-  //allow_gateway_transit     = true
+  #allow_gateway_transit     = true
 }
 
 resource "azurerm_virtual_network_peering" "spokehub" {
@@ -38,10 +40,10 @@ resource "azurerm_virtual_network_peering" "spokehub" {
   virtual_network_name      = azurerm_virtual_network.vnet-spoke.name
   remote_virtual_network_id = var.hub-vnet_id
   allow_forwarded_traffic   = true
-  //use_remote_gateways       = true
+  #use_remote_gateways       = true
 }
 
-// Spoke Routing
+# Spoke Routing
 resource "azurerm_route_table" "spoke-rt-table" {
   name                          = "rt-${var.vnet_name}"
   location                      = var.location
@@ -60,7 +62,8 @@ resource "azurerm_route" "default-route" {
 }
 
 resource "azurerm_subnet_route_table_association" "route_table_association" {
+  for_each = azurerm_subnet.subnet-spoke
+
   route_table_id = azurerm_route_table.spoke-rt-table.id
-  subnet_id      = azurerm_subnet.subnet-spoke[count.index].id
-  count          = length(azurerm_subnet.subnet-spoke)
+  subnet_id      = each.value.id
 }

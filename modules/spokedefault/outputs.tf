@@ -20,14 +20,10 @@ output "vnet_address_space" {
 
 output "vnet_subnets" {
   description = "The ids of subnets created inside the new vNet"
-  value       = azurerm_subnet.subnet-spoke.*.id
+  value       = azurerm_subnet.subnet-spoke
 }
 
 output "vnet_rg_name" {
   description = "The name of the resource group the vnet is created in"
   value       = azurerm_resource_group.rg-spoke.name
-}
-output "subnet_prefixes" {
-  description = "The adress prefixes of subnets created inside the new vNet"
-  value       = azurerm_subnet.subnet-spoke.*.address_prefixes
 }

@@ -47,16 +47,23 @@ resource "azurerm_storage_account" "spokestorageaccount" {
   account_tier             = "Standard"
   account_replication_type = "LRS"
   min_tls_version          = "TLS1_2"
+
   network_rules {
     default_action = "Deny"
-    ip_rules       = ["51.116.75.88", "20.52.95.48", "51.12.72.223", "51.12.22.174"] //IPs from Germany and Sweden 
+    ip_rules       = ["51.116.75.88", "20.52.95.48", "51.12.72.223", "51.12.22.174"] #IPs from Germany and Sweden 
     bypass         = ["Logging", "Metrics", "AzureServices"]
+  }
+
+  sas_policy {
+    expiration_period = "90.00:00:00"
+    expiration_action = "Log"
   }
 
   tags = var.tags
 }
 
 # Create virtual machine
+#TODO Linux VM Resource-type
 #trivy:ignore:AVD-AZU-0039
 resource "azurerm_virtual_machine" "spokevm" {
   name                             = var.vmname
