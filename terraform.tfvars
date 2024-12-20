@@ -1,6 +1,7 @@
 location = "swedencentral"
 tags = {
-environment = "Dev" }
+  environment = "Dev"
+}
 hub_rg_name           = "rg-net-hub-001"
 hub_vnet_name         = "vnet-hub-001"
 hub_vnet_addressspace = ["10.0.0.0/16"]
