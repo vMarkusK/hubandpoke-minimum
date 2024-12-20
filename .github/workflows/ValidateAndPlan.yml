@@ -70,9 +70,6 @@ jobs:
     env:
       VAR_FILE: ${{ vars.VAR_FILE }}
       BACKEND_FILE: ${{ vars.BACKEND_FILE }}
-      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
     defaults:
       run:
         shell: bash
@@ -82,6 +79,13 @@ jobs:
       (needs.lint.result == 'success' || needs.lint.result == 'skipped') &&
       (needs.scan.result == 'success' || needs.scan.result == 'skipped')
     steps:
+    - name: Azure login
+      uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
     - name: Checkout
       uses: actions/checkout@v4
 
