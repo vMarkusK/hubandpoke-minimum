@@ -8,6 +8,6 @@ module "ubunturoutervm" {
   adminusername   = var.vm_admin_user
   vmsize          = var.vm_size_router
   router          = true
-  bootdiagnostics = true
+  bootdiagnostics = false
   tags            = var.tags
 }
