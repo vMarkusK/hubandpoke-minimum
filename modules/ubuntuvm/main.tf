@@ -1,5 +1,5 @@
 data "template_file" "cloudconfig_linux" {
-  template = var.router ? ("${path.module}/cloudconfig_linux_router.tpl") : ("${path.module}/cloudconfig_linux.tpl")
+  template = var.router ? "${file("${path.module}/cloudconfig_linux_router.tpl")}" : "${file("${path.module}/cloudconfig_linux.tpl")}"
 }
 
 data "template_cloudinit_config" "config_linux" {
