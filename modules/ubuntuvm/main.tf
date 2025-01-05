@@ -50,6 +50,8 @@ resource "azurerm_network_interface" "spokevmnic" {
 
 # Generate random text for a unique storage account name and DNS label
 resource "random_id" "randomId" {
+  count = var.bootdiagnostics ? 1 : 0
+
   keepers = {
     # Generate a new ID only when a new resource group is defined
     resource_group = var.rgname
@@ -62,7 +64,9 @@ resource "random_id" "randomIdVM" {
 
 # Create storage account for boot diagnostics
 resource "azurerm_storage_account" "spokestorageaccount" {
-  name                     = "diag${random_id.randomId.hex}"
+  count = var.bootdiagnostics ? 1 : 0
+
+  name                     = "diag${random_id.randomId[0].hex}"
   resource_group_name      = var.rgname
   location                 = var.location
   account_tier             = "Standard"
@@ -118,8 +122,11 @@ resource "azurerm_linux_virtual_machine" "spokevm" {
     version   = "latest"
   }
 
-  boot_diagnostics {
-    storage_account_uri = azurerm_storage_account.spokestorageaccount.primary_blob_endpoint
+  dynamic "boot_diagnostics" {
+    for_each = var.bootdiagnostics == true ? [1] : []
+    content {
+      storage_account_uri = azurerm_storage_account.spokestorageaccount[0].primary_blob_endpoint
+    }
   }
 
   tags = var.tags

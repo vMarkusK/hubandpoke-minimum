@@ -31,6 +31,12 @@ variable "router" {
   default     = false
 }
 
+variable "bootdiagnostics" {
+  description = "Enable Boot Diagnostics for the VM"
+  type        = bool
+  default     = false
+}
+
 variable "tags" {
   description = "The tags to associate with your network and subnets."
   type        = map(string)
