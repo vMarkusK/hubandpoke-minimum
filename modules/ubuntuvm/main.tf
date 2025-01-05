@@ -66,7 +66,7 @@ resource "random_id" "randomIdVM" {
 resource "azurerm_storage_account" "spokestorageaccount" {
   count = var.bootdiagnostics ? 1 : 0
 
-  name                     = "diag${random_id.randomI[0].hex}"
+  name                     = "diag${random_id.randomId[0].hex}"
   resource_group_name      = var.rgname
   location                 = var.location
   account_tier             = "Standard"
