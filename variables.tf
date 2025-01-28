@@ -57,8 +57,9 @@ variable "spoke1_address_space" {
 variable "spoke1_vnet_subnets" {
   description = "Subnets of the spoke1 VNet"
   type = list(object({
-    name = string
-    cidr = list(string)
+    name                    = string
+    cidr                    = list(string)
+    outbound_access_enabled = bool
   }))
 }
 
@@ -81,8 +82,9 @@ variable "spoke2_address_space" {
 variable "spoke2_vnet_subnets" {
   description = "Subnets of the spoke2 VNet"
   type = list(object({
-    name = string
-    cidr = list(string)
+    name                    = string
+    cidr                    = list(string)
+    outbound_access_enabled = bool
   }))
 }
 
