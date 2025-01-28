@@ -23,8 +23,9 @@ variable "dns_servers" {
 variable "subnets" {
   description = "Subnets of the virtual network."
   type = list(object({
-    name = string
-    cidr = list(string)
+    name                    = string
+    cidr                    = list(string)
+    outbound_access_enabled = bool
   }))
 }
 

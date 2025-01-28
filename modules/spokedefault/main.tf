@@ -18,10 +18,11 @@ resource "azurerm_virtual_network" "vnet-spoke" {
 resource "azurerm_subnet" "subnet-spoke" {
   for_each = { for subnet in var.subnets : subnet.name => subnet }
 
-  name                 = each.value.name
-  resource_group_name  = azurerm_resource_group.rg-spoke.name
-  virtual_network_name = azurerm_virtual_network.vnet-spoke.name
-  address_prefixes     = each.value.cidr
+  name                            = each.value.name
+  resource_group_name             = azurerm_resource_group.rg-spoke.name
+  virtual_network_name            = azurerm_virtual_network.vnet-spoke.name
+  address_prefixes                = each.value.cidr
+  default_outbound_access_enabled = each.value.outbound_access_enabled
 }
 
 
