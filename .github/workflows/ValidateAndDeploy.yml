@@ -318,9 +318,9 @@ jobs:
     needs: [terraform_prod]
     if: |
       always() &&
-      (needs.terraform_dev.result == 'success') &&
-      (github.ref_name == 'main') &&
-      (github.event_name == 'push')
+      (needs.terraform_prod.result == 'success') &&
+      (github.event_name == 'release') &&
+      (github.event.action == 'published')
     steps:
     - name: Azure login
       uses: azure/login@v2
