@@ -1,5 +1,5 @@
-    resource_group_name  = "rg-tf-infra-001"
-    storage_account_name = "sttfinfrastate001"
-    container_name       = "tfstate"
-    key                  = "dev.tfstate"
-    use_azuread_auth     = true
+resource_group_name  = "rg-tf-infra-001"
+storage_account_name = "sttfinfrastate001"
+container_name       = "tfstate"
+key                  = "dev.tfstate"
+use_azuread_auth     = true

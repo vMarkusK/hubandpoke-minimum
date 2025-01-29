@@ -25,6 +25,24 @@ resource "azurerm_subnet" "subnet-spoke" {
   default_outbound_access_enabled = each.value.outbound_access_enabled
 }
 
+# NSGs
+resource "azurerm_network_security_group" "subnet-spoke" {
+  for_each = azurerm_subnet.subnet-spoke
+
+  name                = "nsg-${each.value.name}"
+  location            = azurerm_resource_group.rg-spoke.location
+  resource_group_name = azurerm_resource_group.rg-spoke.name
+
+  tags = var.tags
+}
+
+resource "azurerm_subnet_network_security_group_association" "subnet-spoke" {
+  for_each = azurerm_subnet.subnet-spoke
+
+  subnet_id                 = azurerm_subnet.subnet-spoke[each.key].id
+  network_security_group_id = azurerm_network_security_group.subnet-spoke[each.key].id
+}
+
 
 # Peering
 resource "azurerm_virtual_network_peering" "hubspoke" {
