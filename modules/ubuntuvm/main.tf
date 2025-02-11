@@ -110,9 +110,9 @@ resource "azurerm_linux_virtual_machine" "spokevm" {
   ]
 
   os_disk {
-    caching              = "ReadWrite"
-    storage_account_type = "Standard_LRS"
-
+    caching                = "ReadWrite"
+    storage_account_type   = "Standard_LRS"
+    disk_encryption_set_id = var.disk_encryption_set_id == null ? null : var.disk_encryption_set_id
   }
 
   source_image_reference {
