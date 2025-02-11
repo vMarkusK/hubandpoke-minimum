@@ -27,7 +27,7 @@ resource "random_string" "encryption_compute" {
 }
 
 resource "azurerm_user_assigned_identity" "encryption_compute" {
-  name                = "uai-encryption-${random_string.encryption_compute.result}"
+  name                = "uai-compute-${random_string.encryption_compute.result}"
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -35,7 +35,7 @@ resource "azurerm_user_assigned_identity" "encryption_compute" {
 }
 
 resource "azurerm_key_vault" "encryption_compute" {
-  name                = "kv-encryption-${random_string.encryption_compute.result}"
+  name                = "kv-compute-${random_string.encryption_compute.result}"
   resource_group_name = azurerm_resource_group.rg_compute.name
   location            = azurerm_resource_group.rg_compute.location
 
@@ -57,7 +57,7 @@ resource "azurerm_role_assignment" "encryption_compute" {
 }
 
 resource "azurerm_key_vault_key" "encryption_compute" {
-  name         = "cmk-encryption-${formatdate("YYYYMMDD-hhmm", time_static.current.rfc3339)}"
+  name         = "cmk-compute-${formatdate("YYYYMMDD-hhmm", time_static.current.rfc3339)}"
   key_vault_id = azurerm_key_vault.encryption_compute.id
   key_type     = "RSA"
   key_size     = 2048
@@ -76,4 +76,20 @@ resource "azurerm_key_vault_key" "encryption_compute" {
   lifecycle {
     create_before_destroy = true
   }
+}
+
+resource "azurerm_disk_encryption_set" "encryption_compute" {
+  name                = "des-compute-${random_string.encryption_compute.result}"
+  resource_group_name = azurerm_resource_group.rg_compute.name
+  location            = azurerm_resource_group.rg_compute.location
+  key_vault_key_id    = azurerm_key_vault_key.encryption_compute.id
+
+  identity {
+    type = "UserAssigned"
+    identity_ids = [
+      azurerm_user_assigned_identity.encryption_compute.id
+    ]
+  }
+
+  depends_on = [azurerm_role_assignment.encryption_compute]
 }

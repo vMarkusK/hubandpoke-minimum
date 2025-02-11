@@ -41,3 +41,9 @@ variable "tags" {
   description = "The tags to associate with your network and subnets."
   type        = map(string)
 }
+
+variable "disk_encryption_set_id" {
+  description = "Enable Disk Encryption for the VM"
+  type        = string
+  default     = null
+}
