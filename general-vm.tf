@@ -28,8 +28,8 @@ resource "random_string" "encryption_compute" {
 
 resource "azurerm_user_assigned_identity" "encryption_compute" {
   name                = "uai-compute-${random_string.encryption_compute.result}"
-  resource_group_name = azurerm_resource_group.this.name
-  location            = azurerm_resource_group.this.location
+  resource_group_name = azurerm_resource_group.rg_compute.name
+  location            = azurerm_resource_group.rg_compute.location
 
   tags = var.tags
 }
