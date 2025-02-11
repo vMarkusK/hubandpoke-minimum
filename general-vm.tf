@@ -13,3 +13,67 @@ data "azurerm_key_vault_secret" "vmpassword" {
   name         = "vmpassword"
   key_vault_id = data.azurerm_key_vault.secrets.id
 }
+
+data "azuread_client_config" "this" {}
+
+resource "time_static" "current" {}
+
+resource "random_string" "encryption_compute" {
+  length  = 6
+  special = false
+  upper   = false
+  numeric = true
+  lower   = true
+}
+
+resource "azurerm_user_assigned_identity" "encryption_compute" {
+  name                = "uai-encryption-${random_string.encryption_compute.result}"
+  resource_group_name = azurerm_resource_group.this.name
+  location            = azurerm_resource_group.this.location
+
+  tags = var.tags
+}
+
+resource "azurerm_key_vault" "encryption_compute" {
+  name                = "kv-encryption-${random_string.encryption_compute.result}"
+  resource_group_name = azurerm_resource_group.rg_compute.name
+  location            = azurerm_resource_group.rg_compute.location
+
+  sku_name                   = "standard"
+  tenant_id                  = data.azuread_client_config.this.tenant_id
+  enable_rbac_authorization  = true
+  purge_protection_enabled   = true
+  soft_delete_retention_days = 7
+
+  enabled_for_disk_encryption = true
+
+  tags = var.tags
+}
+
+resource "azurerm_role_assignment" "encryption_compute" {
+  scope                = azurerm_key_vault.encryption_compute.id
+  role_definition_name = "Key Vault Crypto User"
+  principal_id         = azurerm_user_assigned_identity.encryption_compute.principal_id
+}
+
+resource "azurerm_key_vault_key" "encryption_compute" {
+  name         = "cmk-encryption-${formatdate("YYYYMMDD-hhmm", time_static.current.rfc3339)}"
+  key_vault_id = azurerm_key_vault.encryption_compute.id
+  key_type     = "RSA"
+  key_size     = 2048
+
+  key_opts = [
+    "decrypt",
+    "encrypt",
+    "sign",
+    "unwrapKey",
+    "verify",
+    "wrapKey",
+  ]
+
+  tags = var.tags
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
