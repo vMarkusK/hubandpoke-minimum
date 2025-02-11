@@ -92,5 +92,7 @@ resource "azurerm_disk_encryption_set" "encryption_compute" {
     ]
   }
 
+  tags = var.tags
+
   depends_on = [azurerm_role_assignment.encryption_compute]
 }
