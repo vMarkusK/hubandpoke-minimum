@@ -57,6 +57,12 @@ resource "azurerm_role_assignment" "encryption_compute" {
   principal_id         = azurerm_user_assigned_identity.encryption_compute.principal_id
 }
 
+resource "azurerm_role_assignment" "encryption_compute_extendet" {
+  scope                = azurerm_key_vault.encryption_compute.id
+  role_definition_name = "Key Vault Crypto Service Encryption User"
+  principal_id         = azurerm_user_assigned_identity.encryption_compute.principal_id
+}
+
 resource "azurerm_key_vault_key" "encryption_compute" {
   name         = "cmk-compute-${formatdate("YYYYMMDD-hhmm", time_static.current.rfc3339)}"
   key_vault_id = azurerm_key_vault.encryption_compute.id
