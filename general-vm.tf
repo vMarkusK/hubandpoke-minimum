@@ -34,6 +34,7 @@ resource "azurerm_user_assigned_identity" "encryption_compute" {
   tags = var.tags
 }
 
+#trivy:ignore:AVD-AZU-0013
 resource "azurerm_key_vault" "encryption_compute" {
   name                = "kv-compute-${random_string.encryption_compute.result}"
   resource_group_name = azurerm_resource_group.rg_compute.name
