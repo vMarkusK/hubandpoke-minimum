@@ -57,7 +57,7 @@ resource "azurerm_role_assignment" "encryption_compute" {
   principal_id         = azurerm_user_assigned_identity.encryption_compute.principal_id
 }
 
-resource "azurerm_role_assignment" "encryption_compute_extendet" {
+resource "azurerm_role_assignment" "encryption_compute_extended" {
   scope                = azurerm_key_vault.encryption_compute.id
   role_definition_name = "Key Vault Crypto Service Encryption User"
   principal_id         = azurerm_user_assigned_identity.encryption_compute.principal_id
@@ -100,5 +100,5 @@ resource "azurerm_disk_encryption_set" "encryption_compute" {
 
   tags = var.tags
 
-  depends_on = [azurerm_role_assignment.encryption_compute]
+  depends_on = [azurerm_role_assignment.encryption_compute, azurerm_role_assignment.encryption_compute_extended]
 }
